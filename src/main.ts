@@ -9,15 +9,16 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     const reflector = app.get(Reflector);
     app.useGlobalGuards(new JwtAuthGuard(reflector));
+    app.setGlobalPrefix('/api');
 
     const config = new DocumentBuilder()
         .setTitle('UniSearcher')
         .setDescription('UniSearcher API documentation')
         .setVersion('1.0.0')
-        .addTag('backend')
         .build();
+
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('/api/docs', app, document);
 
     await app.listen(3000);
 }
