@@ -9,6 +9,8 @@ import {
     prismaConfig,
 } from './configs/prisma.config';
 import * as Joi from 'joi';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
@@ -38,6 +40,8 @@ import * as Joi from 'joi';
             },
             inject: [ConfigService],
         }),
+        AuthModule,
+        UserModule,
     ],
     controllers: [AppController],
     providers: [AppService],
