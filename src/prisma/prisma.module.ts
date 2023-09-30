@@ -1,7 +1,7 @@
-import { Module, DynamicModule } from "@nestjs/common";
-import { PRISMA_OPTIONS_TOKEN } from "./prisma.consts";
-import { PrismaOptions, PrismaAsyncOptions } from "./prisma.options";
-import { PrismaService } from "./prisma.service";
+import { DynamicModule, Module } from '@nestjs/common';
+import { PRISMA_OPTIONS_TOKEN } from './prisma.consts';
+import { PrismaAsyncOptions, PrismaOptions } from './prisma.options';
+import { PrismaService } from './prisma.service';
 
 @Module({
     providers: [PrismaService],
@@ -12,7 +12,10 @@ export class PrismaModule {
         return {
             global: options.isGlobal,
             module: PrismaModule,
-            providers: [{ provide: PRISMA_OPTIONS_TOKEN, useValue: options }, PrismaService],
+            providers: [
+                { provide: PRISMA_OPTIONS_TOKEN, useValue: options },
+                PrismaService,
+            ],
             exports: [PrismaService],
         };
     }
