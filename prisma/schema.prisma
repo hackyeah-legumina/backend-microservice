@@ -11,25 +11,46 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
+  id       String  @id @default(uuid())
   username String  @unique
-  email String  @unique
-  hash String
-  name  String?
+  email    String  @unique
+  hash     String
+  name     String?
 }
 
 model Universities {
-  id String @id @default(uuid())
+  id              String @id @default(uuid())
   institutionName String
-  creationDate String
-  institutionType String
-  universityType String
-  regon String
-  nip String
-  krs String
-  website String
-  streetAddress String
-  streetNumber String
-  postalCode String
-  city String
+  creationDate    String?
+  institutionType String?
+  universityType  String?
+  regon           String?
+  nip             String?
+  krs             String?
+  website         String?
+  streetAddress   String?
+  streetNumber    String?
+  postalCode      String?
+  city            String?
+  StudiesField    StudiesField[]
+}
+
+
+model StudiesField {
+  id   String @id @default(uuid())
+  name String
+  universityId String
+  University Universities @relation(fields: [universityId], references: [id])
+  studiesFieldScoresHistory StudiesFieldScoresHistory[]
+}
+
+model StudiesFieldScoresHistory {
+  id   String @id @default(uuid())
+  score Float
+  maxScore Float
+  year  Int
+  studiesFieldId String
+  peopleApplied Int
+  peopleMax Int
+  StudiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
 }
