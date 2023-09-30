@@ -5,28 +5,29 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto, AuthRegisterDto } from './models/auth.input';
 import { UserService } from 'src/user/user.service';
 import { compare } from 'bcrypt';
-
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {}
 
-  /* async generateToken(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  createTokens(user: User) {
     return {
-      access_token: this.jwtService.sign(payload),
-    };
-  } */
+      accessToken: this.jwtService.sign({
+        userId: user.id,
+      }, { expiresIn: '15m' }),
+      refreshToken: this.jwtService.sign({
+        userId: user.id,
+      }, { expiresIn: '7d' }),
+    }
+  }
 
-  async validatePassword(hash: string, password: string): Promise<any> {
-    // TODO: ADD VALIDATION
-    compare(password, hash);
-    console.log(hash)
-    return true;
+  validatePassword(hash: string, password: string): boolean {    
+    return compare(password, hash);
   }
 
   async register(user: AuthRegisterDto) {
-    if (this.userService.findByUsername(user.username)) {
+    if (await this.userService.findByUsername(user.username)) {
       throw new Error('User already exists');
     } 
     this.userService.create(user);
@@ -38,12 +39,12 @@ export class AuthService {
     if (!userFromDb) {
       throw new Error('User not found');
     }
-
-    const isValid = await this.validatePassword(userFromDb.hash, user.password);
+  
+    const isValid = this.validatePassword(userFromDb.hash, user.password);
     if (!isValid) {
       throw new Error('Invalid password');
     }
 
-    return user;
+    return this.createTokens(userFromDb);
   }
 }
