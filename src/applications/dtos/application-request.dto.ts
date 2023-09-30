@@ -1,6 +1,9 @@
-import { IsUUID } from "class-validator";
+import { IsPositive, IsUUID } from "class-validator";
 
 export class ApplicationApplyDto {
   @IsUUID()
   studyFieldUuid: string;
+
+  @IsPositive()
+  calculatedScore: number;
 }

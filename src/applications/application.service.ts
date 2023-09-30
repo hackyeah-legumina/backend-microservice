@@ -9,13 +9,13 @@ export class ApplicationService {
     return !!this.dao.getApplicationByStudyFieldAndUser(studyFieldUuid, userId);    
   }
 
-  async applyForStudyField(studyFieldUuid: string, userId: string) {
+  async applyForStudyField(studyFieldUuid: string, calculatedScore: number, userId: string) {
     const alreadyApplied = await this.validateIfAlreadyApplied(studyFieldUuid, userId);
 
     if (alreadyApplied) {
       throw new BadRequestException('Already applied');
     }
 
-    return this.dao.createApplication(studyFieldUuid, userId);
+    return this.dao.createApplication(studyFieldUuid, calculatedScore, userId);
   }
 }

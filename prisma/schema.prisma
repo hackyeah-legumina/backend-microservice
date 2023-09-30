@@ -16,7 +16,7 @@ model User {
   email    String  @unique
   hash     String
   name     String?
-  Applications Application[]
+  applications Application[]
 }
 
 model Application {
@@ -26,7 +26,7 @@ model Application {
   status ApplicationStatus
   calculatedScore Float
 
-  User User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
   studiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
 }
 
@@ -62,7 +62,7 @@ model StudiesField {
   id   String @id @default(uuid())
   name String
   universityId String
-  University University @relation(fields: [universityId], references: [id])
+  university University @relation(fields: [universityId], references: [id])
   studiesFieldScoresHistory StudiesFieldScoresHistory[]
   applications Application[]
 }
@@ -75,5 +75,5 @@ model StudiesFieldScoresHistory {
   studiesFieldId String
   peopleApplied Int
   peopleMax Int
-  StudiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
+  studiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
 }

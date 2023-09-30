@@ -9,8 +9,8 @@ export class ApplicationDao {
   async getApplicationByStudyFieldAndUser(studyFieldUuid: string, userId: string) {
     return this.db.application.findFirst({
       where: {
-        studyField: {
-          uuid: studyFieldUuid
+        studiesField: {
+          id: studyFieldUuid
         },
         user: {
           id: userId
@@ -20,13 +20,14 @@ export class ApplicationDao {
   }
 
 
-  async createApplication(studyFieldUuid: string, userId: string) {
+  async createApplication(studyFieldUuid: string, calculatedScore: number, userId: string) {
     return this.db.application.create({
       data: {
+        calculatedScore,
         status: ApplicationStatus.PENDING,
-        studyField: {
+        studiesField: {
           connect: {
-            uuid: studyFieldUuid
+            id: studyFieldUuid
           }
         },
         user: {

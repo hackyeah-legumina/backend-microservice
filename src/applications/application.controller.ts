@@ -9,11 +9,11 @@ export class ApplicationController {
   constructor(private readonly service: ApplicationService) {}
 
   @Post('apply')
-  async applyForStudyField(@Body() { studyFieldUuid }: ApplicationApplyDto, @CtxUser() user: JwtPayload) {
+  async applyForStudyField(@Body() { studyFieldUuid, calculatedScore }: ApplicationApplyDto, @CtxUser() user: JwtPayload) {
     if (!user) {
       throw new UnauthorizedException();
     }
   
-    return this.service.applyForStudyField(studyFieldUuid, user.id);
+    return this.service.applyForStudyField(studyFieldUuid, calculatedScore, user.id);
   }
 }
