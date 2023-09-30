@@ -13,6 +13,7 @@ import { AiModule } from './ai/ai.module';
 import { aiConfig } from './configs/ai.config';
 import { authConfig } from './configs/auth.config';
 import { UniversityModule } from './university/university.module';
+import { DictsModule } from './dicts/dicts.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { UniversityModule } from './university/university.module';
         AuthModule,
         UserModule,
         UniversityModule,
+        DictsModule,
     ],
 })
 export class AppModule {}
