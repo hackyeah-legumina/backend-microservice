@@ -2,6 +2,8 @@ FROM node:18 AS development
 
 WORKDIR /app
 
+COPY . .
+
 RUN apt-get update -y && apt-get install -y openssl
 
 ARG UID=1000
@@ -14,5 +16,6 @@ RUN userdel -r node && \
 RUN chown node:node -R /app
 USER node:node
 
+RUN yarn install --frozen-lockfile
 RUN yarn prisma generate
 
