@@ -6,6 +6,7 @@ import { AuthLoginDto, AuthRegisterDto } from './models/auth.input';
 import { UserService } from 'src/user/user.service';
 import { compare } from 'bcrypt';
 import { TokenType } from './enums/tokenType.enum';
+import { JwtPayload } from './auth.interfaces';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
         private readonly userService: UserService,
     ) {}
 
-    createTokens(payload: any) {
+    createTokens(payload: JwtPayload) {
         return {
             accessToken: this.jwtService.sign(
                 { ...payload, type: TokenType.ACCESS_TOKEN },
