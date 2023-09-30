@@ -6,7 +6,7 @@ export class ApplicationService {
   constructor(private readonly dao: ApplicationDao) {}
 
   async validateIfAlreadyApplied(studyFieldUuid: string, userId: string) {
-    return !!this.dao.getApplicationByStudyFieldAndUser(studyFieldUuid, userId);    
+    return !! await this.dao.getApplicationByStudyFieldAndUser(studyFieldUuid, userId);    
   }
 
   async applyForStudyField(studyFieldUuid: string, calculatedScore: number, userId: string) {
@@ -16,6 +16,10 @@ export class ApplicationService {
       throw new BadRequestException('Already applied');
     }
 
-    return this.dao.createApplication(studyFieldUuid, calculatedScore, userId);
+    return await this.dao.createApplication(studyFieldUuid, calculatedScore, userId);
+  }
+
+  async listUserApplications(userId: string) {
+    return await this.dao.listUserApplications(userId)
   }
 }

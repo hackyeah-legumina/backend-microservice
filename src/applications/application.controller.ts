@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, Get, Post, UnauthorizedException } from "@nestjs/common";
 import { ApplicationService } from "./application.service";
 import { JwtPayload } from '../auth/auth.interfaces';
 import { CtxUser } from "src/auth/decorators/ctx-user.decorator";
@@ -15,5 +15,10 @@ export class ApplicationController {
     }
   
     return this.service.applyForStudyField(studyFieldUuid, calculatedScore, user.id);
+  }
+
+  @Get('list')
+  async listUserApplications(@CtxUser() user: JwtPayload) {
+    return this.service.listUserApplications(user.id)
   }
 }

@@ -38,4 +38,14 @@ export class ApplicationDao {
       }
     });
   }
+
+  async listUserApplications(userId: string) {
+    return await this.db.application.findMany({
+      where: {
+        user: {
+          id: userId
+        }
+      },
+    });
+  }
 }
