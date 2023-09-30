@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -56,6 +57,16 @@ model University {
   postalCode      String?
   city            String?
   StudiesField    StudiesField[]
+
+  @@fulltext([institutionName])
+  @@fulltext([institutionType])
+  @@fulltext([universityType])
+  @@fulltext([website])
+  @@fulltext([streetAddress])
+  @@fulltext([streetNumber])
+  @@fulltext([postalCode])
+  @@fulltext([city])
+  @@fulltext([institutionName, institutionType, universityType, website, streetAddress, streetNumber, postalCode, city])
 }
 
 

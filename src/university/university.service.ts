@@ -18,21 +18,21 @@ export class UniversityService {
         take: number,
         order: string | string[],
         filter: string | string[],
+        search?: string,
     ) {
-        const orderBy: Prisma.UniversitiesOrderByWithRelationInput[] = arrayify(
-            order,
-        ).map((o) => {
-            const [field, sort = 'asc'] = o.split(':');
-            if (
-                !Object.keys(UniversityOrder).includes(field) ||
-                !['asc', 'desc'].includes(sort)
-            ) {
-                throw new BadRequestException(
-                    `Order ${field}:${sort} is invalid`,
-                );
-            }
-            return { [field]: UniversityOrder[sort] };
-        });
+        const orderBy: Prisma.UniversitiesOrderByWithRelationAndSearchRelevanceInput[] =
+            arrayify(order).map((o) => {
+                const [field, sort = 'asc'] = o.split(':');
+                if (
+                    !Object.keys(UniversityOrder).includes(field) ||
+                    !['asc', 'desc'].includes(sort)
+                ) {
+                    throw new BadRequestException(
+                        `Order ${field}:${sort} is invalid`,
+                    );
+                }
+                return { [field]: UniversityOrder[sort] };
+            });
 
         const where = arrayify(filter).reduce(
             (acc, f) => {
@@ -46,31 +46,40 @@ export class UniversityService {
             { city: <string[]>[], type: <string[]>[] },
         );
 
-        console.log({
-            where: {
-                city: !!where.city.length ? { in: where.city } : undefined,
-                OR: [
-                    {
-                        institutionType: !!where.type.length
-                            ? { in: where.type }
-                            : undefined,
-                        universityType: !!where.type.length
-                            ? { in: where.type }
-                            : undefined,
-                    },
-                ],
-            },
-        });
+        const searchToken = search
+            ?.split(' ')
+            .map((s) => `*${s}*`)
+            .join(' ');
 
         return this.db.universities.findMany({
             where: {
-                city: !!where.city.length ? { in: where.city } : undefined,
-                OR: !!where.type.length
-                    ? [
-                          { institutionType: { in: where.type } },
-                          { universityType: { in: where.type } },
-                      ]
-                    : undefined,
+                AND: [
+                    {
+                        OR: search
+                            ? [
+                                  { institutionName: { search: searchToken } },
+                                  { institutionType: { search: searchToken } },
+                                  { universityType: { search: searchToken } },
+                                  { website: { search: searchToken } },
+                                  { streetAddress: { search: searchToken } },
+                                  { streetNumber: { search: searchToken } },
+                                  { postalCode: { search: searchToken } },
+                                  { city: { search: searchToken } },
+                              ]
+                            : undefined,
+                    },
+                    {
+                        city: !!where.city.length
+                            ? { in: where.city }
+                            : undefined,
+                        OR: !!where.type.length
+                            ? [
+                                  { institutionType: { in: where.type } },
+                                  { universityType: { in: where.type } },
+                              ]
+                            : undefined,
+                    },
+                ],
             },
             orderBy,
             take,
