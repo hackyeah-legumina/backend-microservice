@@ -8,27 +8,27 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-  ) {
-    super();
-  }
-
-  async validate(username: string, password: string): Promise<any> {
-    const user = await this.userService.findByUsername(username);
-    if (!user) {
-      return null;
+    constructor(
+        private readonly authService: AuthService,
+        private readonly userService: UserService,
+    ) {
+        super();
     }
 
-    const isValid = await this.authService.validatePassword(
-      user.hash,
-      password,
-    );
-    if (!isValid) {
-      return null;
-    }
+    async validate(username: string, password: string): Promise<any> {
+        const user = await this.userService.findByUsername(username);
+        if (!user) {
+            return null;
+        }
 
-    return user;
-  }
+        const isValid = await this.authService.validatePassword(
+            user.hash,
+            password,
+        );
+        if (!isValid) {
+            return null;
+        }
+
+        return user;
+    }
 }
