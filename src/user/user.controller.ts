@@ -22,6 +22,7 @@ export class UserController {
             id: dbUser.id,
             username: dbUser.username,
             email: dbUser.email,
+            name: dbUser.name,
         };
     }
 }
