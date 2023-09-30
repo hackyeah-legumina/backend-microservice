@@ -14,6 +14,10 @@ export class AuthRegisterDto {
 
   @IsEmail()
   email: string;
-
   name?: string;
+}
+
+
+export class AuthRefreshDto {
+  refreshToken: string;
 }
