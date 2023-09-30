@@ -1,33 +1,47 @@
 // src/auth/auth.service.ts
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto, AuthRegisterDto } from './models/auth.input';
 import { UserService } from 'src/user/user.service';
 import { compare } from 'bcrypt';
-
+import { User } from '@prisma/client';
+import { TokenType } from './enums/tokenType.enum';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {}
 
-  /* async generateToken(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  createTokens(payload: any) {
     return {
-      access_token: this.jwtService.sign(payload),
-    };
-  } */
+      accessToken: this.jwtService.sign({...payload, type: TokenType.ACCESS_TOKEN}, { expiresIn: '1h' }),
+      refreshToken: this.jwtService.sign({...payload, type: TokenType.REFRESH_TOKEN}, { expiresIn: '7d' }),
+    }
+  }
 
-  async validatePassword(hash: string, password: string): Promise<any> {
-    // TODO: ADD VALIDATION
-    compare(password, hash);
-    console.log(hash)
-    return true;
+  refresh(token: string) {
+    let userId: string;
+    let type: TokenType;
+    try {
+        const decoded = this.jwtService.verify(token);
+        userId = decoded.id;
+        type = decoded.type;
+    } catch (error) {
+        throw new BadRequestException('Token expired');
+    }
+    if (type !== TokenType.REFRESH_TOKEN) {
+      throw new BadRequestException('Invalid token');
+    }
+    return this.createTokens({ id: userId });
+  }
+
+  validatePassword(hash: string, password: string): boolean {    
+    return compare(password, hash);
   }
 
   async register(user: AuthRegisterDto) {
-    if (this.userService.findByUsername(user.username)) {
-      throw new Error('User already exists');
+    if (await this.userService.findByUsername(user.username)) {
+      throw new BadRequestException('User already exists');
     } 
     this.userService.create(user);
     return user;
@@ -36,14 +50,14 @@ export class AuthService {
   async login(user: AuthLoginDto) {
     const userFromDb = await this.userService.findByUsername(user.username);
     if (!userFromDb) {
-      throw new Error('User not found');
+      throw new BadRequestException('User not found');
     }
-
-    const isValid = await this.validatePassword(userFromDb.hash, user.password);
+  
+    const isValid = this.validatePassword(userFromDb.hash, user.password);
     if (!isValid) {
-      throw new Error('Invalid password');
+      throw new BadRequestException('Invalid password');
     }
 
-    return user;
+    return this.createTokens({id: userFromDb.id});
   }
 }

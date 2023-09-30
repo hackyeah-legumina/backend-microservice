@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserDao } from "./user.dao";
+import { AuthRegisterDto } from "src/auth/models/auth.input";
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -10,7 +12,13 @@ export class UserService {
     return await this.dao.findByUsername(username);
   }
 
-  async create(user: any) {
-    return await this.dao.create(user);
+  async create(user: AuthRegisterDto) {
+    const _user = {
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      hash: await hash(user.password, 10),
+    }
+    return await this.dao.create(_user);
   }
 }

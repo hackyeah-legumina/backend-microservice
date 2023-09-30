@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { AiModule } from './ai/ai.module';
 import { aiConfig } from './configs/ai.config';
+import { authConfig } from './configs/auth.config';
 
 @Module({
     imports: [
@@ -27,11 +28,12 @@ import { aiConfig } from './configs/ai.config';
                 PORT: Joi.number().default(3000),
                 DATABASE_URL: Joi.string().required(),
                 AI_URL: Joi.string().required(),
+                JWT_SECRET: Joi.string().required(),
             }),
             validationOptions: {
                 abortEarly: true,
             },
-            load: [prismaConfig, aiConfig],
+            load: [prismaConfig, aiConfig, authConfig],
         }),
         PrismaModule.forRootAsync({
             isGlobal: true,
