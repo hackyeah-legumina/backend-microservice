@@ -13,3 +13,6 @@ RUN userdel -r node && \
 
 RUN chown node:node -R /app
 USER node:node
+
+RUN yarn prisma generate
+
