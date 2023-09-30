@@ -1,23 +1,32 @@
-import { IsEmail, IsStrongPassword, MinLength } from "class-validator";
+import { IsEmail, IsStrongPassword, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthLoginDto {
-  username: string;
-  password: string;
+    @ApiProperty()
+    username: string;
+
+    @ApiProperty()
+    password: string;
 }
 
 export class AuthRegisterDto {
-  @MinLength(4)
-  username: string;
+    @ApiProperty()
+    @MinLength(4)
+    username: string;
 
-  @IsStrongPassword()
-  password: string;
+    @ApiProperty()
+    @IsStrongPassword()
+    password: string;
 
-  @IsEmail()
-  email: string;
-  name?: string;
+    @ApiProperty()
+    @IsEmail()
+    email: string;
+
+    @ApiProperty()
+    name?: string;
 }
 
-
 export class AuthRefreshDto {
-  refreshToken: string;
+    @ApiProperty()
+    refreshToken: string;
 }
