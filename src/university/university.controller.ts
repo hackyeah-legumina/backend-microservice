@@ -40,12 +40,15 @@ export class UniversityController {
         @Query('take') take?: string,
         @Query('order') order?: string | string[],
         @Query('filter') filter?: string | string[],
+        @Query('search') search?: string,
+
     ) {
         return this.universityService.paginate(
             +skip || 0,
             +take || 10,
             order || ['name:asc'],
             filter || [],
+            search
         );
     }
 }
