@@ -17,3 +17,19 @@ model User {
   hash String
   name  String?
 }
+
+model Universities {
+  id String @id @default(uuid())
+  institutionName String
+  creationDate String
+  institutionType String
+  universityType String
+  regon String
+  nip String
+  krs String
+  website String
+  streetAddress String
+  streetNumber String
+  postalCode String
+  city String
+}
