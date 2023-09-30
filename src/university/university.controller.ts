@@ -2,17 +2,20 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { UniversityService } from './university.service';
 import { UniversityDto } from './dtos/university.dto';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('universities')
 export class UniversityController {
     constructor(private readonly universityService: UniversityService) {}
 
+    @Public()
     @Get(':id')
     @ApiResponse({ type: UniversityDto })
     async findById(@Param('id') id: string): Promise<UniversityDto> {
         return this.universityService.findById(id);
     }
 
+    @Public()
     @Get()
     @ApiResponse({ type: [UniversityDto] })
     @ApiQuery({

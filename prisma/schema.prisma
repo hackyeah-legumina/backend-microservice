@@ -16,6 +16,7 @@ model User {
   email    String  @unique
   hash     String
   name     String?
+  messages ChatMessage[]
 }
 
 model Universities {
@@ -53,4 +54,12 @@ model StudiesFieldScoresHistory {
   peopleApplied Int
   peopleMax Int
   StudiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
+}
+
+model ChatMessage {
+  id            String      @id @default(uuid())
+  message       String
+  createdById   String
+  createdBy     User        @relation(fields: [createdById], references: [id])
+  createdAt     DateTime    @default(now())
 }
