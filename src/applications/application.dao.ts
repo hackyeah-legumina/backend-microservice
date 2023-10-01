@@ -48,4 +48,22 @@ export class ApplicationDao {
       },
     });
   }
+
+  async getApplicationById(id: string, userId: string) {
+    return await this.db.application.findFirst({
+      where: {
+        id,
+        user: {
+          id: userId
+        }
+      },
+      include: {
+        studiesField: {
+          include: {
+            university: true
+          }
+        }
+      }
+    })
+  }
 }

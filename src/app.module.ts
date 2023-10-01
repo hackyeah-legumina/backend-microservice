@@ -28,7 +28,7 @@ import { DictsModule } from './dicts/dicts.module';
                 HOST: Joi.string().default('0.0.0.0'),
                 PORT: Joi.number().default(3000),
                 DATABASE_URL: Joi.string().required(),
-                //AI_URL: Joi.string().default('HEHE://CHUJKI:AI'),
+                AI_URL: Joi.string().default('HEHE://CHUJKI:AI'),
                 JWT_SECRET: Joi.string().required(),
             }),
             validationOptions: {

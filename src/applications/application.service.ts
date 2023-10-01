@@ -22,4 +22,8 @@ export class ApplicationService {
   async listUserApplications(userId: string) {
     return await this.dao.listUserApplications(userId)
   }
+
+  async getApplicationById(id: string, userId: string) {
+    return await this.dao.getApplicationById(id, userId);
+  }
 }
