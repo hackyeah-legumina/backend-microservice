@@ -98,4 +98,5 @@ model ChatMessage {
   createdById   String
   createdBy     User        @relation(fields: [createdById], references: [id])
   createdAt     DateTime    @default(now())
+  isAssistant   Boolean
 }
