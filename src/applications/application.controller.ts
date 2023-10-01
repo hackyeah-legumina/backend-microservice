@@ -22,7 +22,7 @@ export class ApplicationController {
     return await this.service.listUserApplications(user.id)
   }
 
-  @Get('/id:')
+  @Get('/:id')
   async getApplicationById(@Param('id') id: string, @CtxUser() user: JwtPayload) {
       return await this.service.getApplicationById(id, user.id);
   }
@@ -32,7 +32,7 @@ export class ApplicationController {
     if (body.secretKey !== process.env.STATUS_SECRET_KEY) {
       throw new UnauthorizedException();
     }
-    
+
     return await this.service.changeApplicationStatus(id, body.status);
   }
 }
