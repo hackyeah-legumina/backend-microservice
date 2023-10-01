@@ -2,8 +2,10 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { AI_OPTIONS_TOKEN } from './ai.consts';
 import { AiAsyncOptions, AiOptions } from './ai.options';
 import { AiService } from './ai.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
+    imports: [HttpModule],
     providers: [AiService],
     exports: [AiService],
 })
