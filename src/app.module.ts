@@ -13,6 +13,7 @@ import { AiModule } from './ai/ai.module';
 import { aiConfig } from './configs/ai.config';
 import { authConfig } from './configs/auth.config';
 import { UniversityModule } from './university/university.module';
+import { ApplicationModule } from './applications/applications.module';
 import { DictsModule } from './dicts/dicts.module';
 import { ChatModule } from './chat/chat.module';
 import { MessagesModule } from './messages/messages.module';
@@ -29,7 +30,7 @@ import { MessagesModule } from './messages/messages.module';
                 HOST: Joi.string().default('0.0.0.0'),
                 PORT: Joi.number().default(3000),
                 DATABASE_URL: Joi.string().required(),
-                AI_URL: Joi.string().required(),
+                AI_URL: Joi.string().default('HEHE://CHUJKI:AI'),
                 JWT_SECRET: Joi.string().required(),
             }),
             validationOptions: {
@@ -60,6 +61,7 @@ import { MessagesModule } from './messages/messages.module';
         AuthModule,
         UserModule,
         UniversityModule,
+        ApplicationModule,
         DictsModule,
         ChatModule,
         MessagesModule,

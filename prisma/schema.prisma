@@ -18,6 +18,28 @@ model User {
   hash     String
   name     String?
   messages ChatMessage[]
+  applications Application[]
+}
+
+model Application {
+  id String @id @default(uuid())
+  userId String
+  studiesFieldId String
+  status ApplicationStatus
+  calculatedScore Float
+
+  user User @relation(fields: [userId], references: [id])
+  studiesField StudiesField @relation(fields: [studiesFieldId], references: [id])
+}
+
+enum ApplicationStatus {
+  PENDING
+  TO_BE_PAID
+  PAID
+  REJECTED
+  ACCEPTED
+  ACCEPTED_RESERVE
+  MORE_INFO_NEEDED
 }
 
 model Universities {
@@ -52,8 +74,9 @@ model StudiesField {
   id   String @id @default(uuid())
   name String
   universityId String
-  University Universities @relation(fields: [universityId], references: [id])
+  university Universities @relation(fields: [universityId], references: [id])
   studiesFieldScoresHistory StudiesFieldScoresHistory[]
+  applications Application[]
 }
 
 model StudiesFieldScoresHistory {
