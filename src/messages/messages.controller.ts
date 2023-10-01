@@ -5,6 +5,7 @@ import { MessageDto } from './dtos/message.dto';
 import { CtxUser } from '../auth/decorators/ctx-user.decorator';
 import { JwtPayload } from '../auth/auth.interfaces';
 import { ApiResponse } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('messages')
 export class MessagesController {
@@ -16,7 +17,7 @@ export class MessagesController {
         @Param('id') id: string,
         @CtxUser() user: JwtPayload,
     ): Promise<MessageDto> {
-        const message = await this.messagesService.findById(+id, user.id);
+        const message = await this.messagesService.findById(id, user.id);
         return {
             id: message.id,
             message: message.message,
@@ -30,12 +31,15 @@ export class MessagesController {
         return this.messagesService.findMany(user.id);
     }
 
+    @Public()
     @Post()
     @ApiResponse({ type: MessageDto })
     async createMessage(
         @Body() dto: CreateMessageDto,
         @CtxUser() user: JwtPayload,
-    ) {
-        return this.messagesService.create(dto, user.id);
+    ): Promise<MessageDto[]> {
+        return !!user
+            ? this.messagesService.handleUserMessage(dto, user.id)
+            : this.messagesService.handleGuestMessage(dto);
     }
 }

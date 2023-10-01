@@ -3,6 +3,10 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as process from 'process';
+
+process.on('uncaughtException', console.error);
+process.on('unhandledRejection', console.error);
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);

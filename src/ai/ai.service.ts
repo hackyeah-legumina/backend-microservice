@@ -15,6 +15,6 @@ export class AiService {
 
     async prompt(dto: PromptRequestDto): Promise<PromptResponseDto> {
         this.logger.debug('Requesting AI service...');
-        return { mock: 'mock' };
+        return { response: 'mock' };
     }
 }

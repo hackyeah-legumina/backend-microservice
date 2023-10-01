@@ -1,3 +1,3 @@
 export interface PromptResponseDto {
-    mock: string; // @fixme
+    response: string;
 }

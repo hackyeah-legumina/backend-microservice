@@ -15,7 +15,6 @@ import { authConfig } from './configs/auth.config';
 import { UniversityModule } from './university/university.module';
 import { ApplicationModule } from './applications/applications.module';
 import { DictsModule } from './dicts/dicts.module';
-import { ChatModule } from './chat/chat.module';
 import { MessagesModule } from './messages/messages.module';
 
 @Module({
@@ -63,7 +62,6 @@ import { MessagesModule } from './messages/messages.module';
         UniversityModule,
         ApplicationModule,
         DictsModule,
-        ChatModule,
         MessagesModule,
     ],
 })
