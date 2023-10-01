@@ -3,10 +3,18 @@ import { UniversityService } from './university.service';
 import { UniversityDto } from './dtos/university.dto';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Public } from '../common/decorators/public.decorator';
+import { UniversityDao } from './university.dao';
 
 @Controller('universities')
 export class UniversityController {
-    constructor(private readonly universityService: UniversityService) {}
+    constructor(private readonly universityService: UniversityService, private readonly dao: UniversityDao) {}
+
+    @Public()
+    @Get(':id/study-fields')
+    @ApiResponse({ type: UniversityDto })
+    async findByIdWithStudyFields(@Param('id') id: string): Promise<UniversityDto> {
+        return this.dao.findByIdWithStudyFields(id);
+    }
 
     @Public()
     @Get(':id')
