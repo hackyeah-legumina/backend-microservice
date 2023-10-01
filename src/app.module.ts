@@ -14,6 +14,8 @@ import { aiConfig } from './configs/ai.config';
 import { authConfig } from './configs/auth.config';
 import { UniversityModule } from './university/university.module';
 import { DictsModule } from './dicts/dicts.module';
+import { ChatModule } from './chat/chat.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
     imports: [
@@ -59,6 +61,8 @@ import { DictsModule } from './dicts/dicts.module';
         UserModule,
         UniversityModule,
         DictsModule,
+        ChatModule,
+        MessagesModule,
     ],
 })
 export class AppModule {}
