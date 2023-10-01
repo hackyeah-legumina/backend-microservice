@@ -30,6 +30,7 @@ import { DictsModule } from './dicts/dicts.module';
                 DATABASE_URL: Joi.string().required(),
                 AI_URL: Joi.string().default('HEHE://CHUJKI:AI'),
                 JWT_SECRET: Joi.string().required(),
+                STATUS_SECRET_KEY: Joi.string().required(),
             }),
             validationOptions: {
                 abortEarly: true,

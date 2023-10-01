@@ -66,4 +66,15 @@ export class ApplicationDao {
       }
     })
   }
+
+  async changeApplicationStatus(id: string, status: ApplicationStatus) {
+    return await this.db.application.update({
+      where: {
+        id
+      },
+      data: {
+        status
+      }
+    })
+  }
 }

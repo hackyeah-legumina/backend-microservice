@@ -5,6 +5,7 @@ export const AUTH_CONFIG_TOKEN = 'AUTH_CONFIG';
 
 export const authConfig = registerAs(AUTH_CONFIG_TOKEN, () => ({
     secret: process.env.JWT_SECRET,
+    statusSecretKey: process.env.STATUS_SECRET_KEY,
 }));
 
 export const AUTH_CONFIG_KEY = authConfig.KEY;

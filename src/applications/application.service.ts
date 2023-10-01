@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { ApplicationDao } from "./application.dao";
+import { ApplicationStatus } from "./enums/applicationStatus.enum";
 
 @Injectable()
 export class ApplicationService {
@@ -25,5 +26,10 @@ export class ApplicationService {
 
   async getApplicationById(id: string, userId: string) {
     return await this.dao.getApplicationById(id, userId);
+  }
+
+  async changeApplicationStatus(id: string, status: ApplicationStatus) {
+    // here should be notification to user about status change
+    return await this.dao.changeApplicationStatus(id, status);
   }
 }
