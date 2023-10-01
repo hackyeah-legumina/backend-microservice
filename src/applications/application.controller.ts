@@ -14,11 +14,11 @@ export class ApplicationController {
       throw new UnauthorizedException();
     }
   
-    return this.service.applyForStudyField(studyFieldUuid, calculatedScore, user.id);
+    return await this.service.applyForStudyField(studyFieldUuid, calculatedScore, user.id);
   }
 
   @Get('list')
   async listUserApplications(@CtxUser() user: JwtPayload) {
-    return this.service.listUserApplications(user.id)
+    return await this.service.listUserApplications(user.id)
   }
 }
