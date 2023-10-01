@@ -10,7 +10,7 @@ import * as Joi from 'joi';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { AiModule } from './ai/ai.module';
-import { aiConfig } from './configs/ai.config';
+import { AI_CONFIG_TOKEN, aiConfig } from './configs/ai.config';
 import { authConfig } from './configs/auth.config';
 import { UniversityModule } from './university/university.module';
 import { ApplicationModule } from './applications/applications.module';
@@ -29,7 +29,7 @@ import { MessagesModule } from './messages/messages.module';
                 HOST: Joi.string().default('0.0.0.0'),
                 PORT: Joi.number().default(3000),
                 DATABASE_URL: Joi.string().required(),
-                AI_URL: Joi.string().default('HEHE://CHUJKI:AI'),
+                AI_URL: Joi.string().default('http://ai:2137'),
                 JWT_SECRET: Joi.string().required(),
             }),
             validationOptions: {
@@ -52,7 +52,7 @@ import { MessagesModule } from './messages/messages.module';
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => {
                 const config =
-                    configService.getOrThrow<PrismaConfig>(PRISMA_CONFIG_TOKEN);
+                    configService.getOrThrow<PrismaConfig>(AI_CONFIG_TOKEN);
                 return { url: config.url, verbose: true };
             },
             inject: [ConfigService],
